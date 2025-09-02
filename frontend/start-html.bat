@@ -1,0 +1,3 @@
+@echo off
+echo 正在启动纯HTML版前端...
+start index.html
