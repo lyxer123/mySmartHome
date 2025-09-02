@@ -1,15 +1,27 @@
 import sqlite3
 from datetime import datetime
 import json
+import hashlib
 
 def init_db():
     """初始化数据库表"""
     conn = sqlite3.connect('app.db')
     c = conn.cursor()
+    
+    # 创建传感器数据表
     c.execute('''CREATE TABLE IF NOT EXISTS sensor_data
                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
                   timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
                   data TEXT)''')
+    
+    # 创建用户表
+    c.execute('''CREATE TABLE IF NOT EXISTS users
+                 (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  username TEXT UNIQUE NOT NULL,
+                  password TEXT NOT NULL,
+                  email TEXT UNIQUE,
+                  created_at DATETIME DEFAULT CURRENT_TIMESTAMP)''')
+    
     conn.commit()
     conn.close()
 
@@ -40,3 +52,40 @@ def get_recent_data(limit=10):
     
     conn.close()
     return result
+
+def hash_password(password):
+    """对密码进行哈希处理"""
+    return hashlib.sha256(password.encode()).hexdigest()
+
+def register_user(username, password, email=None):
+    """注册新用户"""
+    conn = sqlite3.connect('app.db')
+    c = conn.cursor()
+    
+    try:
+        hashed_password = hash_password(password)
+        c.execute("INSERT INTO users (username, password, email) VALUES (?, ?, ?)",
+                 (username, hashed_password, email))
+        conn.commit()
+        conn.close()
+        return True, "用户注册成功"
+    except sqlite3.IntegrityError:
+        conn.close()
+        return False, "用户名或邮箱已存在"
+    except Exception as e:
+        conn.close()
+        return False, str(e)
+
+def verify_user(username, password):
+    """验证用户登录"""
+    conn = sqlite3.connect('app.db')
+    c = conn.cursor()
+    
+    c.execute("SELECT id, username, password FROM users WHERE username = ?", (username,))
+    user = c.fetchone()
+    conn.close()
+    
+    if user and user[2] == hash_password(password):
+        return True, {"id": user[0], "username": user[1]}
+    
+    return False, "用户名或密码错误"
