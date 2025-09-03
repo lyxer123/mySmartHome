@@ -3,10 +3,17 @@
     <header class="dashboard-header">
       <h1>IoT数据监控系统</h1>
       <div class="user-info">
-        <span>欢迎，{{ username }}</span>
+        <span>欢迎，<a href="#" class="username-link" @click.prevent="showUserProfile">{{ username }}</a></span>
         <button @click="logout" class="logout-btn">退出登录</button>
       </div>
     </header>
+    
+    <!-- 用户信息设置弹窗 -->
+    <UserProfile 
+      :visible="isUserProfileVisible" 
+      :username="username" 
+      @close="hideUserProfile" 
+    />
     
     <div class="chart-container">
       <div ref="chart" style="width: 100%; height: 400px;"></div>
@@ -32,9 +39,13 @@
 
 <script>
 import * as echarts from 'echarts';
+import UserProfile from '../src/components/UserProfile.vue';
 
 export default {
   name: 'DashboardView',
+  components: {
+    UserProfile
+  },
   data() {
     return {
       username: '',
@@ -45,7 +56,8 @@ export default {
       chartData: {
         timestamps: [],
         values: []
-      }
+      },
+      isUserProfileVisible: false
     }
   },
   mounted() {
@@ -79,6 +91,14 @@ export default {
     }
   },
   methods: {
+    showUserProfile() {
+      this.isUserProfileVisible = true;
+    },
+    
+    hideUserProfile() {
+      this.isUserProfileVisible = false;
+    },
+    
     initChart() {
       this.chart = echarts.init(this.$refs.chart);
       this.updateChart();
@@ -261,6 +281,17 @@ export default {
 
 .logout-btn:hover {
   background: #d32f2f;
+}
+
+.username-link {
+  color: #2c3e50;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.username-link:hover {
+  color: #42b983;
 }
 
 .chart-container {
