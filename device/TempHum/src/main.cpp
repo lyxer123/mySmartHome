@@ -12,8 +12,16 @@
 DHT dht(DHTPIN, DHTTYPE);
 
 // MQTT配置
-// const char* mqtt_server = "192.168.124.1"; // 本地MQTT服务器
-const char* mqtt_server = "test.mosquitto.org"; // 本地MQTT服务器
+/*
+尝试连接MQTT服务器...连接失败, rc=-2 5秒后重试...
+解决方案如下：
+打开控制面板 > 系统和安全 > Windows Defender 防火墙
+点击"启用或关闭Windows Defender防火墙"
+对所有网络类型选择"关闭防火墙"
+点击"确定"保存
+*/
+const char* mqtt_server = "192.168.124.1"; // 本地MQTT服务器
+// const char* mqtt_server = "test.mosquitto.org"; // 本地MQTT服务器
 
 const int mqtt_port = 1883;
 const char* mqtt_topic = "data/pub"; // 与backend配置保持一致
