@@ -1,0 +1,5 @@
+adafruit/Adafruit Unified Sensor@^1.1.9
+adafruit/DHT sensor library@^1.4.4
+tzapu/WiFiManager@^2.0.17
+bblanchon/ArduinoJson@^6.21.3
+knolleary/PubSubClient@^2.8
