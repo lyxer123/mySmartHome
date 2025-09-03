@@ -12,9 +12,11 @@
 DHT dht(DHTPIN, DHTTYPE);
 
 // MQTT配置
-const char* mqtt_server = "192.168.137.1"; // 本地MQTT服务器
+// const char* mqtt_server = "192.168.124.1"; // 本地MQTT服务器
+const char* mqtt_server = "test.mosquitto.org"; // 本地MQTT服务器
+
 const int mqtt_port = 1883;
-const char* mqtt_topic = "mySmartHome/sensor/tempHum";
+const char* mqtt_topic = "data/pub"; // 与backend配置保持一致
 const char* mqtt_client_id = "ESP32_TempHum_Client";
 const char* mqtt_username = ""; // 如果需要认证，请设置用户名
 const char* mqtt_password = ""; // 如果需要认证，请设置密码
