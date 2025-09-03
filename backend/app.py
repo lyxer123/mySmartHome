@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from mqtt_handler import client as mqtt_client
-from database import get_recent_data, init_db, register_user, verify_user
+from database import get_recent_data, init_db, register_user, verify_user, update_user_password
 import config
 import json
 from functools import wraps
@@ -106,6 +106,33 @@ def get_data():
     limit = request.args.get('limit', 10, type=int)
     data = get_recent_data(limit)
     return jsonify({'data': data})
+
+@app.route('/api/user/update-password', methods=['POST'])
+@token_required
+def update_password():
+    """更新用户密码API接口（需要认证）"""
+    try:
+        data = request.get_json()
+        current_password = data.get('currentPassword')
+        new_password = data.get('newPassword')
+        
+        if not current_password or not new_password:
+            return jsonify({'status': 'error', 'message': '当前密码和新密码不能为空'}), 400
+            
+        # 获取当前用户ID
+        user_id = request.user['id']
+        
+        # 更新密码
+        success, message = update_user_password(user_id, current_password, new_password)
+        
+        if success:
+            return jsonify({'status': 'success', 'message': message})
+        else:
+            return jsonify({'status': 'error', 'message': message}), 401
+            
+    except Exception as e:
+        print(f"[DEBUG] Error updating password: {str(e)}")  # 添加异常日志
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
 @app.route('/api/publish', methods=['POST'])
 @token_required

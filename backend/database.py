@@ -89,3 +89,33 @@ def verify_user(username, password):
         return True, {"id": user[0], "username": user[1]}
     
     return False, "用户名或密码错误"
+
+def update_user_password(user_id, current_password, new_password):
+    """更新用户密码"""
+    conn = sqlite3.connect('app.db')
+    c = conn.cursor()
+    
+    # 首先验证当前密码是否正确
+    c.execute("SELECT password FROM users WHERE id = ?", (user_id,))
+    user = c.fetchone()
+    
+    if not user:
+        conn.close()
+        return False, "用户不存在"
+    
+    if user[0] != hash_password(current_password):
+        conn.close()
+        return False, "当前密码不正确"
+    
+    # 更新密码
+    try:
+        hashed_new_password = hash_password(new_password)
+        c.execute("UPDATE users SET password = ? WHERE id = ?", 
+                 (hashed_new_password, user_id))
+        conn.commit()
+        conn.close()
+        return True, "密码更新成功"
+    except Exception as e:
+        conn.rollback()
+        conn.close()
+        return False, str(e)
