@@ -1,0 +1,8 @@
+{
+    "idf.openOcdConfigs": [
+        "board/esp32s3-builtin.cfg"
+    ],
+    "idf.espIdfPathWin": "e:\\github\\esp-idf",
+    "idf.toolsPathWin": "C:\\Users\\yongx\\.espressif",
+    "idf.pythonInstallPath": "C:\\Users\\yongx\\.espressif\\tools\\idf-python\\3.11.2\\python.exe"
+}
