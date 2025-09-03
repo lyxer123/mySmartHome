@@ -34,17 +34,22 @@
         <button type="submit">发布</button>
       </form>
     </div>
+
+    <!-- TempHum 串口调试 -->
+    <SerialDebug />
   </div>
 </template>
 
 <script>
 import * as echarts from 'echarts';
 import UserProfile from '../src/components/UserProfile.vue';
+import SerialDebug from '../src/components/SerialDebug.vue';
 
 export default {
   name: 'DashboardView',
   components: {
-    UserProfile
+    UserProfile,
+    SerialDebug
   },
   data() {
     return {

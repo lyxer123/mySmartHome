@@ -1,0 +1,78 @@
+void printNetworkInfo() {
+    Serial.println("\n--- 网络诊断信息 ---");
+    Serial.print("WiFi状态: ");
+    switch(WiFi.status()) {
+        case WL_CONNECTED: Serial.println("已连接"); break;
+        case WL_NO_SHIELD: Serial.println("无WiFi模块"); break;
+        case WL_IDLE_STATUS: Serial.println("空闲状态"); break;
+        case WL_NO_SSID_AVAIL: Serial.println("SSID不可用"); break;
+        case WL_SCAN_COMPLETED: Serial.println("扫描完成"); break;
+        case WL_CONNECT_FAILED: Serial.println("连接失败"); break;
+        case WL_CONNECTION_LOST: Serial.println("连接丢失"); break;
+        case WL_DISCONNECTED: Serial.println("未连接"); break;
+        default: Serial.println("未知状态"); break;
+    }
+    
+    Serial.print("本地IP: ");
+    Serial.println(WiFi.localIP());
+    Serial.print("网关IP: ");
+    Serial.println(WiFi.gatewayIP());
+    Serial.print("DNS IP: ");
+    Serial.println(WiFi.dnsIP());
+    
+    Serial.print("MQTT服务器: ");
+    Serial.print(mqtt_server);
+    Serial.print(":");
+    Serial.println(mqtt_port);
+    Serial.println("-------------------\n");
+}
+
+void reconnectMQTT() {
+    // 先打印网络诊断信息
+    printNetworkInfo();
+    
+    // 尝试连接MQTT服务器
+    while (!client.connected()) {
+        Serial.print("尝试连接MQTT服务器...");
+        
+        // 尝试连接
+        bool connected = false;
+        if (mqtt_username[0] != '\\0') {
+            connected = client.connect(mqtt_client_id, mqtt_username, mqtt_password);
+        } else {
+            connected = client.connect(mqtt_client_id);
+        }
+        
+        if (connected) {
+            Serial.println("已连接");
+            // 连接成功后发布一条上线消息
+            client.publish("mySmartHome/device/status", "TempHum device online");
+        } else {
+            Serial.print("连接失败, rc=");
+            Serial.print(client.state());
+            Serial.println(", 可能原因:");
+            
+            switch(client.state()) {
+                case MQTT_CONNECTION_TIMEOUT: 
+                    Serial.println("- 连接超时，检查服务器IP和端口");
+                    break;
+                case MQTT_CONNECTION_LOST:
+                    Serial.println("- 连接丢失，检查网络稳定性");
+                    break;
+                case MQTT_CONNECT_FAILED:
+                    Serial.println("- 连接失败，检查认证信息");
+                    break;
+                case MQTT_DISCONNECTED:
+                    Serial.println("- 未连接，检查网络配置");
+                    break;
+                case MQTT_CONNECTED:
+                    break;
+                default:
+                    Serial.println("- 未知错误，检查网络和服务器状态");
+            }
+            
+            Serial.println("5秒后重试...");
+            delay(5000);
+        }
+    }
+}

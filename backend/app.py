@@ -158,6 +158,33 @@ def publish_data():
         print(f"[DEBUG] Error processing publish request: {str(e)}")  # 添加异常日志
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
+@app.route('/api/debug/serial', methods=['POST'])
+@token_required
+def serial_debug():
+    """串口调试API接口（需要认证）"""
+    try:
+        data = request.get_json()
+        command = data.get('command')
+        
+        if not command:
+            return jsonify({'status': 'error', 'message': '命令不能为空'}), 400
+        
+        print(f"[DEBUG] Serial debug command: {command}")
+        
+        # 这里可以添加串口通信逻辑
+        # 暂时模拟响应
+        response = f"执行命令: {command}\\n响应: OK"
+        
+        return jsonify({
+            'status': 'success', 
+            'message': '命令执行成功',
+            'response': response
+        })
+            
+    except Exception as e:
+        print(f"[DEBUG] Error processing serial debug: {str(e)}")
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
 if __name__ == '__main__':
     app.run(
         host=config.WEB_SERVER_CONFIG['host'],

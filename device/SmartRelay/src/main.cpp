@@ -10,7 +10,7 @@
 #endif
 
 // MQTT配置
-const char* mqtt_server = "broker.emqx.io";
+const char* mqtt_server = "10.1.95.252";
 const int mqtt_port = 1883;
 const char* mqtt_client_id = "SmartRelay_Controller";
 const char* mqtt_username = "";

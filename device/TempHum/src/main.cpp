@@ -12,7 +12,7 @@
 DHT dht(DHTPIN, DHTTYPE);
 
 // MQTT配置
-const char* mqtt_server = "broker.emqx.io"; // 公共MQTT服务器，可替换为您自己的服务器
+const char* mqtt_server = "192.168.137.1"; // 本地MQTT服务器
 const int mqtt_port = 1883;
 const char* mqtt_topic = "mySmartHome/sensor/tempHum";
 const char* mqtt_client_id = "ESP32_TempHum_Client";
@@ -231,6 +231,35 @@ void checkResetButton() {
       delay(100);
     }
   }
+}
+
+void printNetworkInfo() {
+    Serial.println("--- 网络诊断信息 ---");
+    Serial.print("WiFi状态: ");
+    switch(WiFi.status()) {
+        case WL_CONNECTED: Serial.println("已连接"); break;
+        case WL_NO_SHIELD: Serial.println("无WiFi模块"); break;
+        case WL_IDLE_STATUS: Serial.println("空闲状态"); break;
+        case WL_NO_SSID_AVAIL: Serial.println("SSID不可用"); break;
+        case WL_SCAN_COMPLETED: Serial.println("扫描完成"); break;
+        case WL_CONNECT_FAILED: Serial.println("连接失败"); break;
+        case WL_CONNECTION_LOST: Serial.println("连接丢失"); break;
+        case WL_DISCONNECTED: Serial.println("未连接"); break;
+        default: Serial.println("未知状态"); break;
+    }
+    
+    Serial.print("本地IP: ");
+    Serial.println(WiFi.localIP());
+    Serial.print("网关IP: ");
+    Serial.println(WiFi.gatewayIP());
+    Serial.print("DNS IP: ");
+    Serial.println(WiFi.dnsIP());
+    
+    Serial.print("MQTT服务器: ");
+    Serial.print(mqtt_server);
+    Serial.print(":");
+    Serial.println(mqtt_port);
+    Serial.println("-------------------");
 }
 
 void blinkLED(int pin, int times, int delayMs) {
