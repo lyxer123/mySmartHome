@@ -3,6 +3,7 @@
 #include "wifi_board.h"
 #include "sensecap_audio_codec.h"
 #include "display/lcd_display.h"
+#include "font_awesome_symbols.h"
 #include "application.h"
 #include "knob.h"
 #include "config.h"

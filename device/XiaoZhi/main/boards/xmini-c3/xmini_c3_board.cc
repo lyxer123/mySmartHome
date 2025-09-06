@@ -8,6 +8,7 @@
 #include "settings.h"
 #include "config.h"
 #include "power_save_timer.h"
+#include "font_awesome_symbols.h"
 #include "press_to_talk_mcp_tool.h"
 
 #include <wifi_station.h>

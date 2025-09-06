@@ -120,96 +120,6 @@
 - Linux 比 Windows 更好，编译速度快，也免去驱动问题的困扰
 - 本项目使用 Google C++ 代码风格，提交代码时请确保符合规范
 
-### 编译命令和流程
-
-#### ESP-IDF 框架安装
-
-首先需要安装 ESP-IDF 开发框架：
-
-```bash
-# 克隆 ESP-IDF 仓库
-git clone -b v5.4 --recursive https://github.com/espressif/esp-idf.git
-
-# 进入 esp-idf 目录
-cd esp-idf
-
-# 安装 ESP-IDF
-./install.sh
-
-# 设置环境变量
-source export.sh
-
-# 验证安装
-idf.py --version
-```
-
-#### Windows 系统安装
-1. 下载 ESP-IDF 安装工具：https://dl.espressif.com/dl/esp-idf/
-2. 运行安装程序，选择 ESP-IDF v5.4 版本
-3. 安装完成后打开 ESP-IDF Command Prompt
-
-#### 环境设置
-```bash
-# 设置 ESP-IDF 环境变量
-source $IDF_PATH/export.sh
-
-# 或者使用 idf.py 设置环境
-. $HOME/esp/esp-idf/export.sh
-```
-
-#### 编译项目
-```bash
-# 进入项目目录
-cd device/XiaoZhi
-
-# 选择目标芯片平台（根据你的硬件选择）
-idf.py set-target esp32s3
-
-# 配置项目（可选）
-idf.py menuconfig
-
-# 编译项目
-idf.py build
-
-# 编译并烧录到设备
-idf.py flash
-
-# 监控串口输出
-idf.py monitor
-
-# 一键编译、烧录并监控
-idf.py flash monitor
-
-# 清理编译文件
-idf.py clean
-
-# 完全清理（包括配置）
-idf.py fullclean
-```
-
-#### 常用编译选项
-```bash
-# 指定串口端口（Windows）
-idf.py -p COM3 flash monitor
-
-# 指定串口端口（Linux/Mac）
-idf.py -p /dev/ttyUSB0 flash monitor
-
-# 编译特定开发板配置
-idf.py -D BOARD=esp32s3 build
-
-# 启用详细编译输出
-idf.py build -v
-```
-
-#### 快速开始示例
-```bash
-cd device/XiaoZhi
-idf.py set-target esp32s3
-idf.py build
-idf.py -p /dev/ttyUSB0 flash monitor
-```
-
 ### 开发者文档
 
 - [自定义开发板指南](main/boards/README.md) - 学习如何为小智 AI 创建自定义开发板
@@ -220,7 +130,7 @@ idf.py -p /dev/ttyUSB0 flash monitor
 
 ## 大模型配置
 
-如果你已经拥有一个小智 AI 聊天机器人设备，并且已接入官方服务器，可以登录 [xiaozhi.me](https://xiaozhi.me) 控制台进行配置。
+如果你已经拥有一个的小智 AI 聊天机器人设备，并且已接入官方服务器，可以登录 [xiaozhi.me](https://xiaozhi.me) 控制台进行配置。
 
 👉 [后台操作视频教程（旧版界面）](https://www.bilibili.com/video/BV1jUCUY2EKM/)
 

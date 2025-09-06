@@ -178,15 +178,9 @@ choice BOARD_TYPE
     config BOARD_TYPE_ATOMS3R_CAM_M12_ECHO_BASE
         bool "AtomS3R CAM/M12 + Echo Base"
         depends on IDF_TARGET_ESP32S3
-    config BOARD_TYPE_ATOM_ECHOS3R
-        bool "AtomEchoS3R"
-        depends on IDF_TARGET_ESP32S3
     config BOARD_TYPE_ATOMMATRIX_ECHO_BASE
         bool "AtomMatrix + Echo Base"
         depends on IDF_TARGET_ESP32
-    config BOARD_TYPE_ESP32S3_AUDIO_BOARD
-        bool "Waveshare ESP32-S3-Audio-Board"
-        depends on IDF_TARGET_ESP32S3
     config BOARD_TYPE_ESP32S3_Touch_AMOLED_1_8
         bool "Waveshare ESP32-S3-Touch-AMOLED-1.8"
         depends on IDF_TARGET_ESP32S3
@@ -318,6 +312,9 @@ choice BOARD_TYPE
     config BOARD_TYPE_ZHENGCHEN_1_54TFT_ML307
         bool "征辰科技1.54(ML307)"
         depends on IDF_TARGET_ESP32S3
+    config BOARD_TYPE_ZHENGCHEN_CAM
+        bool "征辰科技AI Camera"
+        depends on IDF_TARGET_ESP32S3
     config BOARD_TYPE_MINSI_K08_DUAL
         bool "敏思科技K08(DUAL)"
         depends on IDF_TARGET_ESP32S3
@@ -437,18 +434,6 @@ choice DISPLAY_ESP32S3_KORVO2_V3
         bool "ILI9341, 分辨率240*320"
 endchoice
 
-choice DISPLAY_ESP32S3_AUDIO_BOARD
-    depends on BOARD_TYPE_ESP32S3_AUDIO_BOARD
-    prompt "ESP32S3_AUDIO_BOARD LCD Type"
-    default LCD_JD9853
-    help
-        屏幕类型选择
-    config LCD_JD9853
-        bool "JD9853, 分辨率320*172"
-    config LCD_ST7789
-        bool "ST7789, 分辨率240*320"
-endchoice
-
 config USE_WECHAT_MESSAGE_STYLE
     bool "Enable WeChat Message Style"
     default n
@@ -508,7 +493,7 @@ config USE_AUDIO_PROCESSOR
 config USE_DEVICE_AEC
     bool "Enable Device-Side AEC"
     default n
-        depends on USE_AUDIO_PROCESSOR && (BOARD_TYPE_ESP_BOX_3 || BOARD_TYPE_ESP_BOX || BOARD_TYPE_ESP_BOX_LITE || BOARD_TYPE_LICHUANG_DEV || BOARD_TYPE_ESP32S3_KORVO2_V3 || BOARD_TYPE_ESP32S3_Touch_AMOLED_1_75 || BOARD_TYPE_ESP32S3_Touch_AMOLED_2_06 || BOARD_TYPE_ESP32P4_WIFI6_Touch_LCD_4B || BOARD_TYPE_ESP32P4_WIFI6_Touch_LCD_XC || BOARD_TYPE_ESP_S3_LCD_EV_Board_2)
+        depends on USE_AUDIO_PROCESSOR && (BOARD_TYPE_ESP_BOX_3 || BOARD_TYPE_ESP_BOX || BOARD_TYPE_ESP_BOX_LITE || BOARD_TYPE_LICHUANG_DEV || BOARD_TYPE_ESP32S3_KORVO2_V3 || BOARD_TYPE_ESP32S3_Touch_AMOLED_1_75 || BOARD_TYPE_ESP32S3_Touch_AMOLED_2_06 || BOARD_TYPE_ESP32P4_WIFI6_Touch_LCD_4B || BOARD_TYPE_ESP32P4_WIFI6_Touch_LCD_XC || BOARD_TYPE_ESP_S3_LCD_EV_Board_2 || BOARD_TYPE_ZHENGCHEN_CAM)
     help
         因为性能不够，不建议和微信聊天界面风格同时开启
 
